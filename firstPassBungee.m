@@ -1,6 +1,6 @@
 function [ T, R ] = firstPassBungee()
 %Ideal Spring
-
+%Git Test
 k = 52; % N/m
 lo =30;%m
 y = 70; %m
