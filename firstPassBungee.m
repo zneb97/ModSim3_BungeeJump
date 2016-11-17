@@ -1,24 +1,21 @@
 function [ T, R ] = firstPassBungee()
-%Ideal Spring
-%Git Test
-k = 52; % N/m
-lo =30;%m
-y = 70; %m
-startH = y;
-vy = 0; %m/s
-g = 9.8; %m/s
-mass1 = 60; %Mass of jumper 60 kg
-restingL = lo +((mass1*g)/k)
+%Ideal Spring, no drag
+k = 52; %Spring constant of the bungee cord N/m
+lo =30;%Resting length of the cord with no mass on it m
+y = 70; %Current height of the jumper m
+startH = y; %Starting height of the jumper m
+vy = 0; %Current velocity of the jumper m/s
+g = 9.8; %Acceleration due to gravity m/s^2
+mass1 = 60; %Mass of jumper kg
+restingL = lo +((mass1*g)/k); %Resting length of cord with mass on it m
+
 Data = [y, vy];
+
 function res = changingValues(~, Data)
     y = Data(1);
     vy = Data(2);
     dydt = vy;
-    if (y >= startH- restingL)
-        dvydt = -g;
-    else
-        dvydt = (-(mass1*g)- (k *(y - lo)))/mass1;
-    end
+    dvydt = (-(mass1*g)- (k *(y - restingL)))/mass1;
     res = [dydt; dvydt];
 end
 [T, R] = ode45(@changingValues, [0 60], Data);
