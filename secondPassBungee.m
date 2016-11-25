@@ -19,16 +19,15 @@ function res = changingValues(~, Data)
     y = Data(1);
     vy = Data(2);
     dydt = vy;
-    if
+    if(y < (startH - lo))
        dvydt = (-(mass1*g) - (k *(y - restingL))+(.5 *rho* Cd* A *vy^2 ))/mass1;
     else
-        dvydt = (-g*mass1 +(.5 *rho* Cd* A *vy^2 ))/mass1;;
+        dvydt = (-g*mass1 +(.5 *rho* Cd* A *vy^2 ))/mass1;
     end
-    end
-   
+    
     res = [dydt; dvydt];
 end
-[T, R] = ode45(@changingValues, [0 60], Data);
+[T, R] = ode45(@changingValues, [0 120], Data);
 
 Y = R(:,1);
 figure(2)
