@@ -18,12 +18,12 @@ function res = changingValues(~, Data)
     dvydt = (-(mass1*g)- (k *(y - restingL)))/mass1;
     res = [dydt; dvydt];
 end
-[T, R] = ode45(@changingValues, [0 60], Data);
+[T, R] = ode45(@changingValues, [0 120], Data);
 
 Y = R(:,1);
 comet(T,Y);
 end
-%Constants
+%Constants constant
 % 
 %
 % 
