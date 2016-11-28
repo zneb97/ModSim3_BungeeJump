@@ -27,7 +27,8 @@ function res = changingValues(~, Data)
     
     res = [dydt; dvydt];
 end
-[T, R] = ode45(@changingValues, [0 120], Data);
+
+[T, R] = ode45(@changingValues, [0 60], Data);
 
 Y = R(:,1);
 figure(2)
