@@ -23,7 +23,7 @@ end
 Y = R(:,1);
 comet(T,Y);
 end
-%Constants
+%Constants constant
 % 
 %
 % 
