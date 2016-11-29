@@ -40,9 +40,15 @@ function res = changingValues(~, Data)
     res = [dydt; dvydt];
     
 end
-
-[T, R] = ode23(@changingValues, [0 60], Data);
-
+for k=5:5:50
+    for lo = 10:5:50
+[T, R] = ode45(@changingValues, [0 60], Data);
+hold on
 Y = R(:,1);
 plot(T,Y);
+title('Height of Bungee Jumper vs Time');
+xlabel('Time (Seconds)');
+ylabel('Height (Meters)');
+    end
+end
 end
