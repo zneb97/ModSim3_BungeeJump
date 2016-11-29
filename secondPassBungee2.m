@@ -24,15 +24,19 @@ function res = changingValues(~, Data)
     %Acceleration
     if(y <= (startH - lo)) %Below tension point
         if(vy >= 0) %Going up STEP 3
+            display ('STEP 3');
             dvydt = (-(mass1*g) + (k *(startH-y-lo)) - (.5 *rho* Cd* A *vy^2 ))/mass1;
         else %Going down STEP 2
+            display ('STEP 2');
             dvydt = (-(mass1*g) + (k *(startH-y-lo)) + (.5 *rho* Cd* A *vy^2 ))/mass1;
         end
         
     else %Above tension point
         if(vy >= 0) %Going up STEP 4
+            display ('STEP 4');
             dvydt = (-(mass1*g) -(.5 *rho* Cd* A *vy^2 ))/mass1;
         else %Going down STEP 1
+            display ('STEP 1');
             dvydt = (-(mass1*g) + (.5 *rho* Cd* A *vy^2 ))/mass1;
         end
     end
@@ -40,15 +44,15 @@ function res = changingValues(~, Data)
     res = [dydt; dvydt];
     
 end
-for k=5:5:50
-    for lo = 10:5:50
-[T, R] = ode45(@changingValues, [0 60], Data);
+%for k=5:5:50
+ %   for lo = 10:5:50
+[Time, RR] = ode45(@changingValues, [0 60], Data);
 hold on
-Y = R(:,1);
-plot(T,Y);
+Y = RR(:,1);
+plot(Time,Y);
 title('Height of Bungee Jumper vs Time');
 xlabel('Time (Seconds)');
 ylabel('Height (Meters)');
-    end
-end
+ % end
+%end
 end
