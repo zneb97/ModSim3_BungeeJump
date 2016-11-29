@@ -1,7 +1,7 @@
 function [ T, R ] = firstPassBungee()
 %Ideal Spring, no drag
-k = 52; %Spring constant of the bungee cord N/m
-lo =30;%Resting length of the cord with no mass on it m
+k = 16.8; %Spring constant of the bungee cord N/m
+lo = 30;%Resting length of the cord with no mass on it m
 y = 70; %Current height of the jumper m
 startH = y; %Starting height of the jumper m
 vy = 0; %Current velocity of the jumper m/s
@@ -15,10 +15,10 @@ function res = changingValues(~, Data)
     y = Data(1);
     vy = Data(2);
     dydt = vy;
-    dvydt = (-(mass1*g)- (k *(y - restingL)))/mass1;
+    dvydt = (-(mass1*g)- (k *(y - lo)))/mass1;
     res = [dydt; dvydt];
 end
-[T, R] = ode45(@changingValues, [0 60], Data);
+[T, R] = ode45(@changingValues, [0 120], Data);
 
 Y = R(:,1);
 comet(T,Y);
