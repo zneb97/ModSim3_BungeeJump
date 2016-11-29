@@ -15,13 +15,16 @@ function res = changingValues(~, Data)
     y = Data(1);
     vy = Data(2);
     dydt = vy;
-    dvydt = (-(mass1*g)- (k *(y - lo)))/mass1;
+    dvydt = (-(mass1*g)+ (k *(startH- y - lo)))/mass1;
     res = [dydt; dvydt];
 end
-[T, R] = ode45(@changingValues, [0 120], Data);
+[T, R] = ode45(@changingValues, [0 60], Data);
 
 Y = R(:,1);
 comet(T,Y);
+title('Height of Bungee Jumper vs Time');
+xlabel('Time (Seconds)');
+ylabel('Height (Meters)');
 end
 %Constants constant
 % 
