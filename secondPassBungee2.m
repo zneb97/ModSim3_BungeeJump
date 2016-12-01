@@ -5,7 +5,7 @@ A = .5; %Cross-sectional area of human lying down (m^2)
 rho = 1.2; %Density of air (kg/m^3)
 Cd = 3.3; %Drag coeffiecent of human lying down (unitless)(data from Google Drive)
 k = 100; %Spring constant of the bungee cord N/m
-lo =17.5;%Resting length of the cord with no mass on it m
+lo = 17.5;%Resting length of the cord with no mass on it m
 y = 70; %Current height of the jumper m
 startH = y; %Starting height of the jumper m
 vy = 0; %Current velocity of the jumper m/s
@@ -46,7 +46,7 @@ function res = changingValues(~, Data)
 end
 %for k=5:5:50
  %   for lo = 10:5:50
-[Time, RR] = ode45(@changingValues, [0 60], Data);
+[Time, RR] = ode45(@changingValues, [0 240], Data);
 hold on
 Y = RR(:,1);
 plot(Time,Y);
