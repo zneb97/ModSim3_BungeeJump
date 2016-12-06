@@ -116,4 +116,16 @@ title('Velocity of Bungeer vs Time');
 xlabel('Time (Seconds)');
 ylabel('Velocity (m/s)');
 
+figure(3)
+t = (1:50)';
+ X = ones(50,3);
+ X(:,2) = cos((2*pi)/50*t);
+ X(:,3) = sin((2*pi)/50*t);
+ y = 2*cos((2*pi)/50*t-pi/4)+randn(size(t));
+ y = y(:);
+ beta = X\y;
+ yhat = beta(1)+beta(2)*cos((2*pi)/50*t)+beta(3)*sin((2*pi)/50*t);
+ plot(t,y,'b');
+ hold on
+ plot(t,yhat,'r','linewidth',2);
 end
