@@ -117,8 +117,14 @@ j = 1;
     end
 
 
-ValuesOfIntersection = findIntersect()
+ValuesOfIntersection = findIntersect();
+Velocity1(1)=0;
+Velocity2(1) = 0;
+for i = 1: length(indexOfInterest)
+    Velocity1(i)= Y1(i);
+    Velocity2(i)= Y2(i);
+end
 
-indexOfInterest
+velocityAtIntersections = [Velocity1;Velocity2]
 results = length(indexOfInterest);
 end
