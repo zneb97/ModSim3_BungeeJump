@@ -27,57 +27,57 @@ restingL2 = lo2 +((mass2*g)/k2); %Resting length of cord with mass on it m
 
 Data1 = [y, vy1 ,y, vy2];
 
-   % function kopt= jumperOptimization(dataNum)
-     %   changingValues(~,dataNum);
-   % end
+% function kopt= jumperOptimization(dataNum)
+%   changingValues(~,dataNum);
+% end
 
-function res = changingValues1(~, Data)
-    y = Data(1);
-    vy = Data(2);
-    dydt = vy;
-    y2 = Data(3);
-    vy2 = Data(4);
-    dydt2 = vy2;
-    %Acceleration
-    if(y <= (startH - lo1)) %Below tension point
-        if(vy >= 0) %Going up STEP 3
-            dvydt = (-(mass1*g) + (k1 *(startH-y-lo1)) - (.5 *rho* Cd* A *vy^2 ))/mass1;
-        else %Going down STEP 2
-            dvydt = (-(mass1*g) + (k1 *(startH-y-lo1)) + (.5 *rho* Cd* A *vy^2 ))/mass1;
+    function res = changingValues1(~, Data)
+        y = Data(1);
+        vy = Data(2);
+        dydt = vy;
+        y2 = Data(3);
+        vy2 = Data(4);
+        dydt2 = vy2;
+        %Acceleration
+        if(y <= (startH - lo1)) %Below tension point
+            if(vy >= 0) %Going up STEP 3
+                dvydt = (-(mass1*g) + (k1 *(startH-y-lo1)) - (.5 *rho* Cd* A *vy^2 ))/mass1;
+            else %Going down STEP 2
+                dvydt = (-(mass1*g) + (k1 *(startH-y-lo1)) + (.5 *rho* Cd* A *vy^2 ))/mass1;
+            end
+            
+        else %Above tension point
+            if(vy >= 0) %Going up STEP 4
+                dvydt = (-(mass1*g) -(.5 *rho* Cd* A *vy^2 ))/mass1;
+            else %Going down STEP 1
+                dvydt = (-(mass1*g) + (.5 *rho* Cd* A *vy^2 ))/mass1;
+            end
+        end
+        if(dvydt >(3.5*9.8) || dvydt <-(3.5*9.8))
+            disp(dvydt);
+        end
+        %Acceleration
+        if(y2 <= (startH - lo2)) %Below tension point
+            if(vy2 >= 0) %Going up STEP 3
+                dvydt2 = (-(mass2*g) + (k2 *(startH-y2-lo2)) - (.5 *rho* Cd* A *vy2^2 ))/mass2;
+            else %Going down STEP 2
+                dvydt2 = (-(mass2*g) + (k2 *(startH-y2-lo2)) + (.5 *rho* Cd* A *vy2^2 ))/mass2;
+            end
+            
+        else %Above tension point
+            if(vy2 >= 0) %Going up STEP 4
+                dvydt2 = (-(mass2*g) -(.5 *rho* Cd* A *vy^2 ))/mass2;
+            else %Going down STEP 1
+                dvydt2 = (-(mass2*g) + (.5 *rho* Cd* A *vy^2 ))/mass2;
+            end
         end
         
-    else %Above tension point
-        if(vy >= 0) %Going up STEP 4
-            dvydt = (-(mass1*g) -(.5 *rho* Cd* A *vy^2 ))/mass1;
-        else %Going down STEP 1
-            dvydt = (-(mass1*g) + (.5 *rho* Cd* A *vy^2 ))/mass1;
+        if(dvydt2 >(3.5*9.8) || dvydt2 <-(3.5*9.8))
+            disp(dvydt2);
         end
-    end
-     if(dvydt >(3.5*9.8) || dvydt <-(3.5*9.8))
-        disp(dvydt);
-     end
-    %Acceleration
-    if(y2 <= (startH - lo2)) %Below tension point
-        if(vy2 >= 0) %Going up STEP 3
-            dvydt2 = (-(mass2*g) + (k2 *(startH-y2-lo2)) - (.5 *rho* Cd* A *vy2^2 ))/mass2;
-        else %Going down STEP 2
-            dvydt2 = (-(mass2*g) + (k2 *(startH-y2-lo2)) + (.5 *rho* Cd* A *vy2^2 ))/mass2;
-        end
+        res = [dydt; dvydt; dydt2; dvydt2];
         
-    else %Above tension point
-        if(vy2 >= 0) %Going up STEP 4
-            dvydt2 = (-(mass2*g) -(.5 *rho* Cd* A *vy^2 ))/mass2;
-        else %Going down STEP 1
-            dvydt2 = (-(mass2*g) + (.5 *rho* Cd* A *vy^2 ))/mass2;
-        end
     end
-   
-    if(dvydt2 >(3.5*9.8) || dvydt2 <-(3.5*9.8))
-        disp(dvydt2);
-    end
-    res = [dydt; dvydt; dydt2; dvydt2];
-    
-end
 
 [T1, R1] = ode45(@changingValues1, [0 60], Data1);
 hold on
@@ -101,23 +101,24 @@ title('Velocity of Bungeer vs Time');
 xlabel('Time (Seconds)');
 ylabel('Velocity (m/s)');
 
-%%%%%%
-%figure(3)
-%[xout,yout] = intersections(T1,Y1,T2,Y2)
-
-
-%%%%intersections
-j =1;
+Diff= Y1- Y2;
 intersect(1) = 0;
+indexOfInterest(1) = 1;
+j = 1;
     function inte = findIntersect()
-        for i = 1: length(T1)
-        if(Y1(i)- Y2(i) <=.25)
-           intersect(j) = T1(i);
-        end
-        j = j+1;
+        for i = 2: length(T1)
+            if(sign(Diff(i))~= sign(Diff(i-1)))
+                intersect(i) = T1(i);
+                indexOfInterest(j) = i;
+                j = j+1;
+            end
         end
         inte = intersect;
     end
 
+
 ValuesOfIntersection = findIntersect()
+
+indexOfInterest
+results = length(indexOfInterest);
 end
